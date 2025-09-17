@@ -87,6 +87,8 @@ main{
 
 }
 .task:focus{
+    outline: none;
+    background-color: var(--color-bg);
     border: none !important;
 }
 .add-btn{
@@ -137,4 +139,8 @@ img{
     padding: 10px;
     box-shadow: 1px 1px 3px 1px rgb(176, 176, 176) ;
 
+}
+
+.edite, .remove{
+    border: none;
 }
