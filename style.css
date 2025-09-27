@@ -39,6 +39,8 @@ body{
 }
 main{
     display:flex;
+    overflow-y:scroll;
+    scrollbar-width: 0px !important;
     flex-direction: column;
     gap: 20px;
     padding: 1em;
@@ -99,6 +101,10 @@ main{
     padding: .5em 1em;
     border-radius:10px;
 }
+.tasks{
+    display: grid;
+    gap: 10px;
+}
 .tasks-container{
     display: flex;
     flex-direction: column;
@@ -106,12 +112,18 @@ main{
     border-radius: 20px;
     padding: 10px 10px;
     text-overflow: ellipsis;
-    gap: 10px;
     box-shadow: 0px 0px 5px 1px rgba(128, 128, 128, 0.534);
 }
 .tasks-container h2{
     font-size: 1em;
 }
+
+.completed{
+    font-size: 1em;
+    text-decoration: line-through;
+    color: rgb(136, 136, 136);
+}
+
 span{
     color: var(--color-text-secondary);
 }
