@@ -3,6 +3,7 @@ let tasks = [];
 const tasksContainer = document.querySelector('.tasks');
 const input = document.querySelector('.task');
 
+
 document.querySelector('.add-btn').addEventListener('click', () => {
 
     let inputElement = input.value;
@@ -25,6 +26,7 @@ function addTask(task){
 //rendering the html function 
 function renderToDo(){
     tasksContainer.innerHTML = '';
+
     tasks.forEach((task) => {
         tasksHtml = `
          <div class="tasks-container">
@@ -37,7 +39,7 @@ function renderToDo(){
                     <button class="edite">
                         <img src="assets/pen.png" alt="edit-icon">
                     </button>
-                    <button class="remove">
+                    <button class="remove" data-id ='${task.id}'>
                         <img src="assets/remove.png" alt="remove-icon">
                     </button>
                 </div>
@@ -58,13 +60,25 @@ document.querySelector('.tasks').addEventListener('click', (event) => {
     const deletButton = event.target.closest('.remove');
     const editeButton = event.target.closest('.edite');
 
-    let task = tasks.find((t) => t.id == checkbox.dataset.id)
+
     if (checkbox){
+        let task = tasks.find((t) => t.id == checkbox.dataset.id)
         task.isActive = checkbox.checked;
         renderToDo();
         console.log('updated tasks :', tasks);
     }
-    
+    if(deletButton){
+        const id = Number(deletButton.dataset.id)
+        tasks = tasks.filter((t) => t.id !== id)
+        console.log(tasks)
+        renderToDo();
+        console.log('this is remove button')
+        console.log(deletButton.dataset.id)
+    }
+    if(editeButton){
+        console.log('this is the edite button ')
+    }
 
-})
 
+
+});
