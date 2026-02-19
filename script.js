@@ -89,15 +89,16 @@ function changeCompletionState(checked,id){
             task.completed = checked;
         }
     })
-    console.log(tasks)
+    setTimeout(() => {
+        render(getFilterState(currentFilter))
+
+    }, 500);
 }
 
-let completedTasks ;
-let atciveTasks ;
 
 function getFilterState(){
-    if(currentFilter === 'completed') return completedTasks;
-    if(currentFilter === 'active') return atciveTasks;
+    if(currentFilter === 'completed') return tasks.filter(task => task.completed === true);
+    if(currentFilter === 'active') return tasks.filter(task => task.completed === false );
     return tasks
 }
 
@@ -110,7 +111,7 @@ function getFilterState(){
     if(removeBtn){
         let id = Number(removeBtn.dataset.id)
         removeTask(id)
-        render(tasks)
+        render(getFilterState(currentFilter))
     }
     if(editBtn){
         let id = Number(editBtn.dataset.id)
@@ -156,4 +157,12 @@ addBtn.addEventListener('click', () => {
     addTask()
     render(getFilterState(currentFilter))
     clearInput()
+})
+
+taskToAdd.addEventListener('keydown', (event) =>  {
+    if(event.key == "Enter"){
+        addTask()
+        render(getFilterState())
+        clearInput()
+    }
 })
