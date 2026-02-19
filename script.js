@@ -1,84 +1,159 @@
-let tasks = [];
+//source of truth
+let tasks = [
+    {
+        id: 2,
+        text:' first task',
+        completed:true
+    },
+    {
+        id: 1,
+        text:'second todo',
+        completed:false
+    }
 
-const tasksContainer = document.querySelector('.tasks');
-const input = document.querySelector('.task');
+]
+
+//filter state
+let currentFilter = 'all'
+
+const tasksContainer = document.querySelector(".tasks");
+const taskToAdd = document.querySelector('.task');
+const taskInput = document.querySelector(".taskInput");
+const addBtn = document.querySelector(".add-btn");
+const filter = document.querySelector('.filter-container');
 
 
-document.querySelector('.add-btn').addEventListener('click', () => {
-
-    let inputElement = input.value;
-
-    addTask({
-        name:inputElement,
-        id:Date.now(),
-        isActive:false
-    });
-
-    clearInput();
-});
-
-//function to add tasks to the todoList
-function addTask(task){
-    tasks.unshift(task);
-    renderToDo()
-}
-
-//rendering the html function 
-function renderToDo(){
-    tasksContainer.innerHTML = '';
-
-    tasks.forEach((task) => {
-        tasksHtml = `
-         <div class="tasks-container">
-                <span class="date">Apr 24</span>
+function render(tasks){
+    let taskHtml = '';
+    tasks.forEach(task => {
+        taskHtml += `
+                <div class="tasks-container">
                 <div class="inner-container">
-                    <input type="checkbox" class="checkbox" 
-                        data-id='${task.id}' 
-                        ${task.isActive ? "checked" : ''} ">
-                    <h2 class=" ${task.isActive ? 'completed' : ''}">${task.name}</h2>
-                    <button class="edite">
+                    <input type="checkbox" class="checkbox" ${task.completed ? "checked":""}
+                    data-id='${task.id}'  >
+                    <input type="text" value="${task.text}" class="taskInput" disabled>
+                </div>
+                
+                <div class="task-buttons">
+                    <button class="edite" data-id='${task.id}' >
                         <img src="assets/pen.png" alt="edit-icon">
                     </button>
                     <button class="remove" data-id ='${task.id}'>
                         <img src="assets/remove.png" alt="remove-icon">
                     </button>
                 </div>
-            </div>
-    `
-    tasksContainer.innerHTML += tasksHtml;
+            </div>`
     });
+    tasksContainer.innerHTML = taskHtml
 }
 
-//clearing the input
+render(tasks)
+
+function addTask(){
+    let text = taskToAdd.value;
+    tasks.unshift(
+        {
+            id:Date.now(),
+            text:text,
+            completed:false
+        }
+    )
+}
+
+// event listener to add task and rerender the html
+
+
 function clearInput(){
-    input.value = '';
-    input.focus(); 
+    taskToAdd.value = '';
+    focusOnInput(taskToAdd)
 }
 
-document.querySelector('.tasks').addEventListener('click', (event) => {
-    const checkbox = event.target.closest('.checkbox');
-    const deletButton = event.target.closest('.remove');
-    const editeButton = event.target.closest('.edite');
+function removeTask(id){
+    tasks = tasks.filter(task => task.id !== id)
+}
 
+function editeTask(id){
+    const taskInput = document.querySelector(".taskInput")
+    taskInput.removeAttribute("disabled")
+    focusOnInput(taskInput)
+}
 
-    if (checkbox){
-        let task = tasks.find((t) => t.id == checkbox.dataset.id)
-        task.isActive = checkbox.checked;
-        renderToDo();
-        console.log('updated tasks :', tasks);
+function focusOnInput(input){
+    input.focus()
+    input.setSelectionRange(input.value.length, input.value.length )
+}
+
+function changeCompletionState(checked,id){
+    tasks.forEach(task => {
+        if(task.id === id){
+            task.completed = checked;
+        }
+    })
+    console.log(tasks)
+}
+
+let completedTasks ;
+let atciveTasks ;
+
+function getFilterState(){
+    if(currentFilter === 'completed') return completedTasks;
+    if(currentFilter === 'active') return atciveTasks;
+    return tasks
+}
+
+ tasksContainer.addEventListener('click', event => {
+    let removeBtn = event.target.closest('.remove')
+    let editBtn = event.target.closest('.edite')
+    let text = event.target.closest('.taskinput')
+    let checkbox = event.target.closest('.checkbox')
+    
+    if(removeBtn){
+        let id = Number(removeBtn.dataset.id)
+        removeTask(id)
+        render(tasks)
     }
-    if(deletButton){
-        const id = Number(deletButton.dataset.id)
-        tasks = tasks.filter((t) => t.id !== id)
-        console.log(tasks)
-        renderToDo();
-        console.log('this is remove button')
-        console.log(deletButton.dataset.id)
+    if(editBtn){
+        let id = Number(editBtn.dataset.id)
+        editeTask(editBtn,id)
+        console.log('edite worked')
     }
-    if(editeButton){
-        console.log('this is the edite button ')
+    if(checkbox){
+        let id = Number(checkbox.dataset.id);
+        changeCompletionState(checkbox.checked, id)
     }
+ })
+filter.addEventListener('click', (event) => {
+    const filterAll = event.target.closest('#all-btn')
+    const completedFilter = event.target.closest('#completed-btn')
+    const activeFilter = event.target.closest('#active-btn')
+    const clickedBtn = filterAll || completedFilter || activeFilter
 
+    if(!clickedBtn) return;
+    //remove active style from the filter buttons ;
+    document.querySelectorAll('.filter-container button').forEach((button)=>{
+        button.classList.remove('active-filter')
+    })
 
+    clickedBtn.classList.add('active-filter')
 
-});
+    if(filterAll){
+        currentFilter = "all";
+        render(getFilterState(currentFilter))
+    }
+    if(completedFilter){
+        currentFilter = "completed"
+        completedTasks = tasks.filter(task => task.completed === true)
+        render(getFilterState(currentFilter))
+    }
+    if(activeFilter){
+        currentFilter = "active"
+        atciveTasks = tasks.filter(task => task.completed === false )
+        render(getFilterState(currentFilter))
+    }
+    console.log(currentFilter)
+})
+addBtn.addEventListener('click', () => {
+    addTask()
+    render(getFilterState(currentFilter))
+    clearInput()
+})

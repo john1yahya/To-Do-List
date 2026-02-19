@@ -1,0 +1,122 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+main{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color:lightgray;
+    gap: 20px;
+    padding: 20px;
+}
+main .filter-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    text-align: center;
+}
+main .filter-container button {
+    width:auto;
+    text-align: center;
+    border: none;
+    background-color: rgb(255, 255, 255);
+
+}
+main .filter-container button , .input-add .task , .input-add button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 3px solid rgba(128, 128, 128, 0.5);
+
+}
+.active-filter{
+    background-color: aqua;
+}
+.input-add{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.input-add .task , .input-add button{
+    padding: 10px 20px;
+    border-radius: 5px;
+    
+}
+.input-add .task{
+    width: 70%;
+}
+.input-add button{
+    width: 30%;
+    border: none;
+}
+.tasks{
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+}
+.tasks-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 10px 0px;
+    width: 100%;
+    align-items: center;
+
+}
+.inner-container{
+    display: flex;
+    gap: 5px;
+    width: 60%;
+}
+.tasks-container input ,.tasks-container button{
+    height: 30px;
+    border: 2px solid gray;
+
+}
+.tasks-container input{
+    width: 80%;
+    padding-left: 10px;
+    font-size: large;
+}
+.tasks-container input:disabled{
+    background-color: white;
+    border: none;
+    color: black;
+}
+.tasks-container .task-buttons{
+    padding: 10px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+    border-radius: 5px !important;
+
+}
+.tasks-container .task-buttons button{
+    width: 30px;
+
+}
+input[type="checkbox"] {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #8b8c89;
+    background-color: transparent;
+    outline: none;
+    transition: all 0.1s ease;
+    border-radius: 5px;
+}
+img{
+    width: 20px;
+}
+.filter-container .active-filter{
+    background-color: #6a79f9;
+    border: none;
+    color:white;
+}
