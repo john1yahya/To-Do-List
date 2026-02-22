@@ -31,7 +31,7 @@ function render(tasks){
                 <div class="inner-container">
                     <input type="checkbox" class="checkbox" ${task.completed ? "checked":""}
                     data-id='${task.id}'  >
-                    <input type="text" value="${task.text}" class="taskInput" disabled>
+                    <input type="text" value="${task.text}" class="taskInput" data-id='${task.id}' disabled>
                 </div>
                 
                 <div class="task-buttons">
@@ -72,10 +72,18 @@ function removeTask(id){
     tasks = tasks.filter(task => task.id !== id)
 }
 
-function editeTask(id){
-    const taskInput = document.querySelector(".taskInput")
+function editeTask(editBtn,id){
+    const taskInput = editBtn.closest('.tasks-container').querySelector('.taskInput')
     taskInput.removeAttribute("disabled")
     focusOnInput(taskInput)
+}
+
+function saveEdit(newText,id){
+    tasks.forEach(task => {
+        if(task.id === id){
+            task.text = newText
+        }
+    })
 }
 
 function focusOnInput(input){
@@ -123,6 +131,7 @@ function getFilterState(){
         changeCompletionState(checkbox.checked, id)
     }
  })
+
 filter.addEventListener('click', (event) => {
     const filterAll = event.target.closest('#all-btn')
     const completedFilter = event.target.closest('#completed-btn')
@@ -139,20 +148,19 @@ filter.addEventListener('click', (event) => {
 
     if(filterAll){
         currentFilter = "all";
-        render(getFilterState(currentFilter))
     }
     if(completedFilter){
         currentFilter = "completed"
-        completedTasks = tasks.filter(task => task.completed === true)
-        render(getFilterState(currentFilter))
     }
     if(activeFilter){
         currentFilter = "active"
         atciveTasks = tasks.filter(task => task.completed === false )
-        render(getFilterState(currentFilter))
     }
+    render(getFilterState(currentFilter))
+
     console.log(currentFilter)
 })
+
 addBtn.addEventListener('click', () => {
     addTask()
     render(getFilterState(currentFilter))
@@ -165,4 +173,15 @@ taskToAdd.addEventListener('keydown', (event) =>  {
         render(getFilterState())
         clearInput()
     }
+})
+
+tasksContainer.addEventListener('focusout', (event) => {
+    if(event.target.classList.contains('taskInput')){
+        const taskInput = event.target
+        let id = Number(taskInput.dataset.id)
+        taskInput.setAttribute("disabled","")
+        saveEdit(taskInput.value,id)
+        console.log(tasks)
+    }
+
 })
