@@ -1,17 +1,5 @@
 //source of truth
-let tasks = [
-    {
-        id: 2,
-        text:' first task',
-        completed:true
-    },
-    {
-        id: 1,
-        text:'second todo',
-        completed:false
-    }
-
-]
+let tasks = JSON.parse(localStorage.getItem("tasks")) || []
 
 //filter state
 let currentFilter = 'all'
@@ -45,6 +33,7 @@ function render(tasks){
             </div>`
     });
     tasksContainer.innerHTML = taskHtml
+    localStorage.setItem("tasks",JSON.stringify(tasks))
 }
 
 render(tasks)
