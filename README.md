@@ -19,4 +19,5 @@ A simple todo list application built with vanilla JavaScript.
 - The closest() method
 - Single source of truth / state management
 - blur vs focusout events
-- LocalStorage / JSON methods
+- LocalStorage / JSON method
+
