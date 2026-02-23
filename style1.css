@@ -207,6 +207,11 @@ input[type="checkbox"] {
     accent-color: var(--accent);
 }
 
+.tasks-container:has(.checkbox:checked) .taskInput {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
 .taskInput {
     flex: 1;
     border: none;
