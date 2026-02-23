@@ -9,6 +9,7 @@ const taskToAdd = document.querySelector('.task');
 const taskInput = document.querySelector(".taskInput");
 const addBtn = document.querySelector(".add-btn");
 const filter = document.querySelector('.filter-container');
+const errorMessage = document.querySelector('.error');
 
 
 function render(tasks){
@@ -37,16 +38,26 @@ function render(tasks){
 }
 
 render(tasks)
+function showError(){
+    errorMessage.style.display = "block"
+    setTimeout(() => {
+        errorMessage.style.display = "none"
+    }, 1000)
+}
 
 function addTask(){
     let text = taskToAdd.value;
-    tasks.unshift(
-        {
-            id:Date.now(),
-            text:text,
-            completed:false
-        }
-    )
+    if(text.trim() === ""){
+        showError()
+    } else {
+        tasks.unshift(
+            {
+                id:Date.now(),
+                text:text,
+                completed:false
+            }
+        )
+    }
 }
 
 // event listener to add task and rerender the html
@@ -143,7 +154,7 @@ filter.addEventListener('click', (event) => {
     }
     if(activeFilter){
         currentFilter = "active"
-        atciveTasks = tasks.filter(task => task.completed === false )
+        tasks.filter(task => task.completed === false )
     }
     render(getFilterState(currentFilter))
 

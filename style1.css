@@ -1,122 +1,272 @@
-*{
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap');
+
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-main{
+:root {
+    --bg: #0f0f13;
+    --surface: #17171d;
+    --surface-2: #1e1e26;
+    --accent: #7c6af5;
+    --accent-glow: rgba(124, 106, 245, 0.25);
+    --accent-dim: rgba(124, 106, 245, 0.12);
+    --text: #e8e8f0;
+    --text-muted: #5a5a72;
+    --border: #252530;
+    --danger: #f05e5e;
+    --radius: 14px;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    min-height: 100vh;
+    color: var(--text);
+}
+
+main {
+    position: relative;
+    z-index: 1;
     width: 100%;
-    height: 100vh;
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 52px 20px 60px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    background-color:lightgray;
-    gap: 20px;
-    padding: 20px;
+    gap: 14px;
 }
-main .filter-container{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-    width: 100%;
-    text-align: center;
-}
-main .filter-container button {
-    width:auto;
-    text-align: center;
-    border: none;
-    background-color: rgb(255, 255, 255);
 
+main::before {
+    content: "My Tasks";
+    font-family: 'Syne', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: var(--text);
+    display: block;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
 }
-main .filter-container button , .input-add .task , .input-add button {
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: 3px solid rgba(128, 128, 128, 0.5);
 
-}
-.active-filter{
-    background-color: aqua;
-}
-.input-add{
-    width: 100%;
+/* Filter */
+.filter-container {
     display: flex;
-    justify-content: center;
-    gap: 10px;
+    gap: 6px;
+    background: var(--surface);
+    padding: 5px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
 }
-.input-add .task , .input-add button{
-    padding: 10px 20px;
-    border-radius: 5px;
-    
-}
-.input-add .task{
-    width: 70%;
-}
-.input-add button{
-    width: 30%;
+
+.filter-container button {
+    flex: 1;
+    padding: 9px 12px;
     border: none;
-}
-.tasks{
-    width: 100%;
-    background-color: white;
     border-radius: 10px;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
-.tasks-container{
+
+.filter-container button:hover {
+    color: var(--text);
+    background: var(--surface-2);
+}
+
+.filter-container .active-filter {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border: 1px solid rgba(124, 106, 245, 0.3);
+}
+
+/* Error */
+.error {
+    display: none;
+    background: rgba(240, 94, 94, 0.1);
+    color: var(--danger);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(240, 94, 94, 0.25);
+    animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Input Add */
+.input-add {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin: 10px 0px;
-    width: 100%;
-    align-items: center;
+    gap: 10px;
+}
 
-}
-.inner-container{
-    display: flex;
-    gap: 5px;
-    width: 60%;
-}
-.tasks-container input ,.tasks-container button{
-    height: 30px;
-    border: 2px solid gray;
-
-}
-.tasks-container input{
-    width: 80%;
-    padding-left: 10px;
-    font-size: large;
-}
-.tasks-container input:disabled{
-    background-color: white;
-    border: none;
-    color: black;
-}
-.tasks-container .task-buttons{
-    padding: 10px;
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    justify-items: center;
-    align-content: center;
-    border-radius: 5px !important;
-
-}
-.tasks-container .task-buttons button{
-    width: 30px;
-
-}
-input[type="checkbox"] {
-    width: 30px;
-    height: 30px;
-    border: 2px solid #8b8c89;
-    background-color: transparent;
+.input-add .task {
+    flex: 1;
+    padding: 13px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text);
     outline: none;
-    transition: all 0.1s ease;
-    border-radius: 5px;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
-img{
-    width: 20px;
+
+.input-add .task:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
 }
-.filter-container .active-filter{
-    background-color: #6a79f9;
+
+.input-add .task::placeholder {
+    color: var(--text-muted);
+}
+
+.input-add button {
+    padding: 13px 22px;
     border: none;
-    color:white;
+    border-radius: var(--radius);
+    background: var(--accent);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+.input-add button:hover {
+    opacity: 0.88;
+    box-shadow: 0 4px 28px rgba(124, 106, 245, 0.4);
+}
+
+.input-add button:active {
+    transform: scale(0.97);
+}
+
+/* Tasks List */
+.tasks {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.tasks:empty::after {
+    content: "No tasks yet — add one above";
+    display: block;
+    text-align: center;
+    padding: 36px;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+/* Task Item */
+.tasks-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+}
+
+.tasks-container:last-child {
+    border-bottom: none;
+}
+
+.tasks-container:hover {
+    background: var(--surface-2);
+}
+
+.inner-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+}
+
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    accent-color: var(--accent);
+}
+
+.taskInput {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    color: var(--text);
+    outline: none;
+    min-width: 0;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.15s;
+}
+
+.taskInput:disabled {
+    background: transparent;
+    color: var(--text);
+    cursor: default;
+}
+
+.taskInput:not(:disabled) {
+    background: var(--accent-dim);
+    border: 1px solid rgba(124, 106, 245, 0.3);
+    color: var(--accent);
+}
+
+.task-buttons {
+    display: flex;
+    gap: 4px;
+    margin-left: 8px;
+}
+
+.task-buttons button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+
+.task-buttons .edite:hover {
+    background: var(--accent-dim);
+}
+
+.task-buttons .remove:hover {
+    background: rgba(240, 94, 94, 0.12);
+}
+
+img {
+    width: 15px;
+    height: 15px;
+    opacity: 0.4;
+    filter: invert(1);
+}
+
+.task-buttons button:hover img {
+    opacity: 0.9;
 }
